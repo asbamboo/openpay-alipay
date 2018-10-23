@@ -19,7 +19,7 @@ use asbamboo\openpayAlipay\exception\ResponseFormatException;
  * @author 李春寅 <licy2013@aliyun.com>
  * @since 2018年10月22日
  */
-class PayWxpayQrcd implements PayInterface
+class PayAlipayQrcd implements PayInterface
 {
     /**
      * 微信扫码支付
@@ -76,8 +76,8 @@ class PayWxpayQrcd implements PayInterface
      * {@inheritDoc}
      * @see \asbamboo\openpay\channel\ChannelInterface::getName()
      */
-    public function getName()
+    public function getName() : string
     {
-        return self::getName();
+        return self::NAME;
     }
 }

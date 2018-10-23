@@ -2,7 +2,7 @@
 namespace asbamboo\openpayAlipay\alipayApi\requestParams;
 
 use asbamboo\helper\env\Env AS EnvHelper;
-use asbamboo\openpay\env;
+use asbamboo\openpayAlipay\Env;
 
 /**
  * 公共请求参数
@@ -119,7 +119,7 @@ class CommonParams implements CommonParamsInterface
     {
         $sign           = '';
         $sign_str       = $this->getSignString();
-        $private_pem    = EnvHelper::get(env::ALIPAY_RSA_PRIVATE_KEY);
+        $private_pem    = EnvHelper::get(Env::ALIPAY_RSA_PRIVATE_KEY);
         if(is_file($private_pem)){
             $private_pem    = 'file://' . $private_pem;
         }
