@@ -14,7 +14,7 @@ use asbamboo\openpayAlipay\alipayApi\response\TradePrecreateResponse;
 use asbamboo\openpayAlipay\exception\ResponseFormatException;
 
 /**
- * openpay[trade.pay] 渠道:微信扫码支付
+ * openpay[trade.pay] 渠道:支付宝扫码支付
  *
  * @author 李春寅 <licy2013@aliyun.com>
  * @since 2018年10月22日
@@ -22,11 +22,12 @@ use asbamboo\openpayAlipay\exception\ResponseFormatException;
 class PayAlipayQrcd implements PayInterface
 {
     /**
-     * 微信扫码支付
+     * 支付宝扫码支付
      *
      * @var string
      */
-    const NAME  = 'ALIPAY_QRCD'; // 微信扫码支付
+    const NAME  = 'ALIPAY_QRCD';
+    const LABEL = '支付宝扫码支付';
 
     /**
      *
@@ -79,5 +80,15 @@ class PayAlipayQrcd implements PayInterface
     public function getName() : string
     {
         return self::NAME;
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     * @see \asbamboo\openpay\channel\ChannelInterface::getLabel()
+     */
+    public function getLabel() : string
+    {
+        return self::LABEL;
     }
 }
