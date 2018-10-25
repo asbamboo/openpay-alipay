@@ -2,8 +2,8 @@
 namespace asbamboo\openpayAlipay\channel\v1_0\trade;
 
 use asbamboo\openpay\channel\v1_0\trade\PayInterface;
-use asbamboo\openpay\apiStore\parameter\v1_0\trade\PayRequest;
-use asbamboo\openpay\apiStore\parameter\v1_0\trade\PayResponse;
+use asbamboo\openpay\apiStore\parameter\v1_0\trade\pay\PayRequest;
+use asbamboo\openpay\apiStore\parameter\v1_0\trade\pay\PayResponse;
 use asbamboo\helper\env\Env AS EnvHelper;
 use asbamboo\api\apiStore\ApiResponseParams;
 use asbamboo\api\exception\ApiException;
