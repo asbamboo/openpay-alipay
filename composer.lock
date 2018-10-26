@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4372d373c713825f592187c149767744",
+    "content-hash": "aa490a7ca3eff7e1f9fba4e51ab2b692",
     "packages": [
         {
             "name": "asbamboo/api",
@@ -52,12 +52,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbamboo/autoload.git",
-                "reference": "f3edb79fb1e620b1cd71eb119f28397f90fea675"
+                "reference": "df01664bec28a199288085f4455a41ca9b4edacc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbamboo/autoload/zipball/f3edb79fb1e620b1cd71eb119f28397f90fea675",
-                "reference": "f3edb79fb1e620b1cd71eb119f28397f90fea675",
+                "url": "https://api.github.com/repos/asbamboo/autoload/zipball/df01664bec28a199288085f4455a41ca9b4edacc",
+                "reference": "df01664bec28a199288085f4455a41ca9b4edacc",
                 "shasum": ""
             },
             "require": {
@@ -88,7 +88,7 @@
                 "source": "https://github.com/asbamboo/autoload/tree/1.0.1",
                 "issues": "https://github.com/asbamboo/autoload/issues"
             },
-            "time": "2018-10-23T12:52:23+00:00"
+            "time": "2018-10-26T08:06:39+00:00"
         },
         {
             "name": "asbamboo/di",
@@ -248,12 +248,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbamboo/openpay.git",
-                "reference": "dcf2691a85c8801897904970ad745c875ab90f12"
+                "reference": "7d9b2a1e9aa576661956bea8031d0b42efaf85db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbamboo/openpay/zipball/dcf2691a85c8801897904970ad745c875ab90f12",
-                "reference": "dcf2691a85c8801897904970ad745c875ab90f12",
+                "url": "https://api.github.com/repos/asbamboo/openpay/zipball/7d9b2a1e9aa576661956bea8031d0b42efaf85db",
+                "reference": "7d9b2a1e9aa576661956bea8031d0b42efaf85db",
                 "shasum": ""
             },
             "require": {
@@ -288,7 +288,7 @@
                 "source": "https://github.com/asbamboo/openpay/tree/1.0.0",
                 "issues": "https://github.com/asbamboo/openpay/issues"
             },
-            "time": "2018-10-25T12:58:48+00:00"
+            "time": "2018-10-26T07:48:55+00:00"
         },
         {
             "name": "asbamboo/router",
@@ -1792,9 +1792,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "phpunit/phpunit": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
