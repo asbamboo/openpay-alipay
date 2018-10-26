@@ -55,7 +55,7 @@ abstract class ResponseAbstract implements ResponseInterface
     /**
      *
      * {@inheritDoc}
-     * @see \asbamboo\openpay\common\ResponseInterface::__construct()
+     * @see \asbamboo\openpayAlipay\alipayApi\response\ResponseInterface::__construct()
      */
     public function __construct(HttpResponseInterface $Response)
     {
@@ -63,9 +63,9 @@ abstract class ResponseAbstract implements ResponseInterface
     }
 
     /**
-     *
+     * 
      * {@inheritDoc}
-     * @see \asbamboo\openpay\common\ResponseInterface::get()
+     * @see \asbamboo\openpayAlipay\alipayApi\response\ResponseInterface::get()
      */
     public function get(string $key)
     {
