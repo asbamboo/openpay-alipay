@@ -43,7 +43,7 @@ class Client implements ClientInterface
     {
         $class_name         = __NAMESPACE__ . "\\request\\{$api_name}";
         if(!class_exists($class_name)){
-            throw new NotFindApiRequestException(sprintf('找不到请求微信接口相关的类：%s', $api_name));
+            throw new NotFindApiRequestException(sprintf('找不到请求支付宝接口相关的类：%s', $api_name));
         }
         return new $class_name;
     }
