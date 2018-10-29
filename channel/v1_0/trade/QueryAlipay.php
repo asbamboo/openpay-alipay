@@ -1,22 +1,22 @@
 <?php
 namespace asbamboo\openpayAlipay\channel\v1_0\trade;
 
-use asbamboo\openpay\channel\v1_0\trade\QueryInterface;
-use asbamboo\openpay\apiStore\parameter\v1_0\trade\query\QueryRequest;
-use asbamboo\openpay\apiStore\parameter\v1_0\trade\query\QueryResponse;
-use asbamboo\helper\env\Env AS EnvHelper;
-use asbamboo\openpayAlipay\Env;
-use asbamboo\openpayAlipay\exception\ResponseFormatException;
+use asbamboo\api\apiStore\ApiResponseParams;
 use asbamboo\api\exception\ApiException;
+use asbamboo\helper\env\Env as EnvHelper;
+use asbamboo\openpayAlipay\Env;
 use asbamboo\openpayAlipay\alipayApi\Client;
 use asbamboo\openpayAlipay\alipayApi\response\TradeQueryResponse;
+use asbamboo\openpayAlipay\exception\ResponseFormatException;
 use asbamboo\openpay\apiStore\exception\Api3NotSuccessResponseException;
-use asbamboo\api\apiStore\ApiResponseParams;
 use asbamboo\openpay\apiStore\parameter\v1_0\trade\Constant;
+use asbamboo\openpay\apiStore\parameter\v1_0\trade\query\QueryRequest;
+use asbamboo\openpay\apiStore\parameter\v1_0\trade\query\QueryResponse;
+use asbamboo\openpay\channel\v1_0\trade\QueryInterface;
 
 /**
  * alipay.trade.query(统一收单线下交易查询)
- * 
+ *
  * @author 李春寅<licy2013@aliyun.com>
  * @since 2018年10月27日
  */
@@ -29,9 +29,9 @@ class QueryAlipay implements QueryInterface
      */
     const NAME  = 'ALIPAY';
     const LABEL = '支付宝';
-    
+
     /**
-     * 
+     *
      * {@inheritDoc}
      * @see \asbamboo\openpay\channel\v1_0\trade\QueryInterface::execute()
      */
@@ -49,7 +49,7 @@ class QueryAlipay implements QueryInterface
                     $request_data[$alipay_key] = $alipay_value;
                 }
             }
-            
+
             $AlipayResponse = Client::request('TradeQuery', $request_data);
             if(     $AlipayResponse->get('code') != TradeQueryResponse::CODE_SUCCESS
                 ||  $AlipayResponse->get('sub_code') != null
@@ -75,10 +75,10 @@ class QueryAlipay implements QueryInterface
             throw new ApiException($e->getMessage());
         }
     }
-    
+
     /**
      * 转换交易状态
-     * 
+     *
      * @param string $alipay_trade_status
      */
     private function convertTradeStatus(string $alipay_trade_status)
@@ -90,7 +90,7 @@ class QueryAlipay implements QueryInterface
             'TRADE_FINISHED'    => Constant::TRADE_STATUS_PAYOK, //（未付款交易超时关闭，或支付完成后全额退款）
         ][$alipay_trade_status];
     }
-    
+
     /**
      *
      * {@inheritDoc}
@@ -100,7 +100,7 @@ class QueryAlipay implements QueryInterface
     {
         return self::NAME;
     }
-    
+
     /**
      *
      * {@inheritDoc}
