@@ -2,8 +2,6 @@
 namespace asbamboo\openpayAlipay\channel\v1_0\trade;
 
 use asbamboo\openpay\channel\v1_0\trade\PayInterface;
-use asbamboo\openpay\apiStore\parameter\v1_0\trade\pay\PayRequest;
-use asbamboo\openpay\apiStore\parameter\v1_0\trade\pay\PayResponse;
 use asbamboo\helper\env\Env AS EnvHelper;
 use asbamboo\api\apiStore\ApiResponseParams;
 use asbamboo\api\exception\ApiException;
@@ -12,6 +10,9 @@ use asbamboo\openpay\apiStore\exception\Api3NotSuccessResponseException;
 use asbamboo\openpayAlipay\alipayApi\Client;
 use asbamboo\openpayAlipay\alipayApi\response\TradePrecreateResponse;
 use asbamboo\openpayAlipay\exception\ResponseFormatException;
+use asbamboo\openpay\channel\v1_0\trade\payParameter\Request;
+use asbamboo\openpay\channel\v1_0\trade\payParameter\Response;
+use asbamboo\openpayAlipay\Constant;
 
 /**
  * openpay[trade.pay] 渠道:支付宝扫码支付
@@ -22,29 +23,21 @@ use asbamboo\openpayAlipay\exception\ResponseFormatException;
 class PayAlipayQrcd implements PayInterface
 {
     /**
-     * 支付宝扫码支付
      *
-     * @var string
+     * @param Request $Request
+     * @return Response
      */
-    const NAME  = 'ALIPAY_QRCD';
-    const LABEL = '支付宝扫码支付';
-
-    /**
-     *
-     * @param PayRequest $PayRequest
-     * @return PayResponse
-     */
-    public function execute(PayRequest $PayRequest) : PayResponse
+    public function execute(Request $Request) : Response
     {
         try{
             $request_data           = [
                 'app_id'            => (string) EnvHelper::get(Env::ALIPAY_APP_ID),
-                'out_trade_no'      => $PayRequest->getOutTradeNo(),
-                'total_amount'      => bcdiv($PayRequest->getTotalFee(), 100, 2), //聚合接口接收的单位是分，支付宝的单位是元
-                'subject'           => $PayRequest->getTitle(),
+                'out_trade_no'      => $Request->getOutTradeNo(),
+                'total_amount'      => bcdiv($Request->getTotalFee(), 100, 2), //聚合接口接收的单位是分，支付宝的单位是元
+                'subject'           => $Request->getTitle(),
                 'notify_url'        => EnvHelper::get(Env::ALIPAY_QRCD_NOTIFY_URL),
             ];
-            $alipay_params          = json_decode((string) $PayRequest->getThirdPart(), true);
+            $alipay_params          = json_decode((string) $Request->getThirdPart(), true);
             if(is_array($alipay_params)){
                 foreach($alipay_params AS $alipay_key => $alipay_value){
                     $request_data[$alipay_key] = $alipay_value;
@@ -64,31 +57,24 @@ class PayAlipayQrcd implements PayInterface
                 $Exception->setApiResponseParams($ApiResponseParams);
                 throw $Exception;
             }
-            $PayResponse                            = new PayResponse();
-            $PayResponse->_redirect_data['qr_code'] = $AlipayResponse->get('qr_code');
-            return $PayResponse;
+            $Response               = new Response();
+            $Response->is_redirect  = true;
+            $Response->qr_code      = $AlipayResponse->get('qr_code');
+            return $Response;
         }catch(ResponseFormatException $e){
             throw new ApiException($e->getMessage());
         }
     }
 
     /**
-     *
+     * 
      * {@inheritDoc}
-     * @see \asbamboo\openpay\channel\ChannelInterface::getName()
+     * @see \asbamboo\openpay\channel\ChannelInterface::supports()
      */
-    public function getName() : string
+    public function supports() : array
     {
-        return self::NAME;
-    }
-
-    /**
-     *
-     * {@inheritDoc}
-     * @see \asbamboo\openpay\channel\ChannelInterface::getLabel()
-     */
-    public function getLabel() : string
-    {
-        return self::LABEL;
+        return [
+            Constant::CHANNEL_ALIPAY_QRCD   => Constant::CHANNEL_ALIPAY_QRCD_LABEL,
+        ];   
     }
 }
