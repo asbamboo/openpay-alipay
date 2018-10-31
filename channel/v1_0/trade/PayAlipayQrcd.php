@@ -13,6 +13,9 @@ use asbamboo\openpayAlipay\exception\ResponseFormatException;
 use asbamboo\openpay\channel\v1_0\trade\payParameter\Request;
 use asbamboo\openpay\channel\v1_0\trade\payParameter\Response;
 use asbamboo\openpayAlipay\Constant;
+use asbamboo\http\ServerRequestInterface;
+use asbamboo\openpay\channel\v1_0\trade\payParameter\NotifyResult;
+use asbamboo\openpayAlipay\alipayApi\notify\Notify;
 
 /**
  * openpay[trade.pay] 渠道:支付宝扫码支付
@@ -24,8 +27,8 @@ class PayAlipayQrcd implements PayInterface
 {
     /**
      *
-     * @param Request $Request
-     * @return Response
+     * {@inheritDoc}
+     * @see \asbamboo\openpay\channel\v1_0\trade\PayInterface::execute()
      */
     public function execute(Request $Request) : Response
     {
@@ -35,7 +38,7 @@ class PayAlipayQrcd implements PayInterface
                 'out_trade_no'      => $Request->getOutTradeNo(),
                 'total_amount'      => bcdiv($Request->getTotalFee(), 100, 2), //聚合接口接收的单位是分，支付宝的单位是元
                 'subject'           => $Request->getTitle(),
-                'notify_url'        => EnvHelper::get(Env::ALIPAY_QRCD_NOTIFY_URL),
+                'notify_url'        => $Request->getNotifyUrl(),
             ];
             $alipay_params          = json_decode((string) $Request->getThirdPart(), true);
             if(is_array($alipay_params)){
@@ -58,8 +61,8 @@ class PayAlipayQrcd implements PayInterface
                 throw $Exception;
             }
             $Response               = new Response();
-            $Response->is_redirect  = true;
-            $Response->qr_code      = $AlipayResponse->get('qr_code');
+            $Response->setIsRedirect(true);
+            $Response->setQrCode($AlipayResponse->get('qr_code'));
             return $Response;
         }catch(ResponseFormatException $e){
             throw new ApiException($e->getMessage());
@@ -67,7 +70,41 @@ class PayAlipayQrcd implements PayInterface
     }
 
     /**
-     * 
+     *
+     * {@inheritDoc}
+     * @see \asbamboo\openpay\channel\v1_0\trade\PayInterface::notify()
+     */
+    public function notify(ServerRequestInterface $Request) : NotifyResult
+    {
+        $Notify             = new Notify();
+        $NotifyResponse     = $Notify->exec($Request);
+        $NotifyResult       = new NotifyResult();
+        $NotifyResult->setInTradeNo($NotifyResponse->out_trade_no);
+        $NotifyResult->setThirdTradeNo($NotifyResponse->trade_no);
+        $NotifyResult->setThirdPart(json_encode($NotifyResponse->notify_data));
+
+        /**
+         * 交易状态：
+         *  - WAIT_BUYER_PAY（交易创建，等待买家付款）、
+         *  - TRADE_CLOSED（未付款交易超时关闭，或支付完成后全额退款）、
+         *  - TRADE_SUCCESS（交易支付成功）、
+         *  - TRADE_FINISHED（交易结束，不可退款）
+         */
+        if($NotifyResponse->trade_status == 'TRADE_CLOSED'){
+            $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_CANCLE);
+        }else if($NotifyResponse->trade_status == 'TRADE_SUCCESS'){
+            $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_PAYOK);
+        }else if($NotifyResponse->trade_status == 'TRADE_SUCCESS'){
+            $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_PAYED);
+        }else{
+            $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_PAYING);
+        }
+        return $NotifyResult;
+
+    }
+
+    /**
+     *
      * {@inheritDoc}
      * @see \asbamboo\openpay\channel\ChannelInterface::supports()
      */
@@ -75,6 +112,6 @@ class PayAlipayQrcd implements PayInterface
     {
         return [
             Constant::CHANNEL_ALIPAY_QRCD   => Constant::CHANNEL_ALIPAY_QRCD_LABEL,
-        ];   
+        ];
     }
 }
