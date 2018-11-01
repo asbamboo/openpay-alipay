@@ -21,7 +21,5 @@ final class Env
     const ALIPAY_RSA_ALIPAY_KEY     = 'OPENPAY_ALIPAY_RSA_ALIPAY';
     // 支付宝 app id
     const ALIPAY_APP_ID             = 'OPENPAY_ALIPAY_APP_ID';
-    // 支付宝扫码支付的消息推送 notify url
-    const ALIPAY_QRCD_NOTIFY_URL    = "OPENPAY_ALIPAY_QRCD_NOTIFY_URL";
     /*********************************************************************************************/
 }
