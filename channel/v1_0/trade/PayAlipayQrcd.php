@@ -77,8 +77,11 @@ class PayAlipayQrcd implements PayInterface
     public function notify(ServerRequestInterface $Request) : NotifyResult
     {
         $Notify             = new Notify();
-        $NotifyResponse     = $Notify->exec($Request);
         $NotifyResult       = new NotifyResult();
+        $NotifyResult->setResponseSuccess('success');
+        $NotifyResult->setResponseFailed('fail');
+
+        $NotifyResponse     = $Notify->exec($Request);
         $NotifyResult->setInTradeNo($NotifyResponse->out_trade_no);
         $NotifyResult->setThirdTradeNo($NotifyResponse->trade_no);
         $NotifyResult->setThirdPart(json_encode($NotifyResponse->notify_data));
@@ -99,8 +102,8 @@ class PayAlipayQrcd implements PayInterface
         }else{
             $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_PAYING);
         }
-        return $NotifyResult;
 
+        return $NotifyResult;
     }
 
     /**
