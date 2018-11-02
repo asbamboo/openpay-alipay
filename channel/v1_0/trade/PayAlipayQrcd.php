@@ -14,7 +14,7 @@ use asbamboo\openpay\channel\v1_0\trade\payParameter\Request;
 use asbamboo\openpay\channel\v1_0\trade\payParameter\Response;
 use asbamboo\openpayAlipay\Constant;
 use asbamboo\http\ServerRequestInterface;
-use asbamboo\openpay\channel\v1_0\trade\payParameter\NotifyResult;
+use asbamboo\openpay\channel\v1_0\trade\payParameter\NotifyResult; 
 use asbamboo\openpayAlipay\alipayApi\notify\Notify;
 
 /**
@@ -35,7 +35,7 @@ class PayAlipayQrcd implements PayInterface
         try{
             $request_data           = [
                 'app_id'            => (string) EnvHelper::get(Env::ALIPAY_APP_ID),
-                'out_trade_no'      => $Request->getOutTradeNo(),
+                'out_trade_no'      => $Request->getInTradeNo(),
                 'total_amount'      => bcdiv($Request->getTotalFee(), 100, 2), //聚合接口接收的单位是分，支付宝的单位是元
                 'subject'           => $Request->getTitle(),
                 'notify_url'        => $Request->getNotifyUrl(),
