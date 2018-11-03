@@ -22,8 +22,6 @@ EnvHelper::set(AlipayEnv::ALIPAY_RSA_PRIVATE_KEY, dirname(__DIR__) . '/alipay-rs
 EnvHelper::set(AlipayEnv::ALIPAY_RSA_ALIPAY_KEY, dirname(__DIR__) . '/alipay-rsa/app_alipay_key.pem');
 // 支付宝app id
 EnvHelper::set(AlipayEnv::ALIPAY_APP_ID, '2016090900468991');
-// 支付宝扫码支付的notify url
-EnvHelper::set(AlipayEnv::ALIPAY_QRCD_NOTIFY_URL, 'http://example.org');
 /***************************************************************************************************/
 
 /***************************************************************************************************
