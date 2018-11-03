@@ -2,6 +2,7 @@
 namespace asbamboo\openpayAlipay\alipayApi\notify;
 
 use asbamboo\http\ServerRequest;
+use asbamboo\http\ServerRequestInterface;
 
 /**
  * 接收支付宝推送的消息
@@ -17,5 +18,5 @@ interface NotifyInterface
      * @param ServerRequest $Request
      * @return NotifyResponse
      */
-    public function exec(ServerRequest $Request) : NotifyResponse;
+    public function exec(ServerRequestInterface $Request) : NotifyResponse;
 }

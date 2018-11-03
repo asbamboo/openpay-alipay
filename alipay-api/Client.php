@@ -39,7 +39,7 @@ class Client implements ClientInterface
      * @throws NotFindApiRequestException
      * @return RequestInterface
      */
-    private static function createRequest(string $api_name) : RequestInterface
+    public static function createRequest(string $api_name) : RequestInterface
     {
         $class_name         = __NAMESPACE__ . "\\request\\{$api_name}";
         if(!class_exists($class_name)){

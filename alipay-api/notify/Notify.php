@@ -27,9 +27,9 @@ class Notify implements NotifyInterface
             throw new OpenpayAlipayException('非法 notify 请求.');
         }
         $NotifyResponse                 = new NotifyResponse();
-        $NotifyResponse->out_trade_no   = $Request->getPostParam('out_trade_no');
-        $NotifyResponse->trade_no       = $Request->getPostParam('trade_no');
-        $NotifyResponse->trade_status   = $Request->getPostParam('trade_status');
+        $NotifyResponse->out_trade_no   = $Request->getRequestParam('out_trade_no');
+        $NotifyResponse->trade_no       = $Request->getRequestParam('trade_no');
+        $NotifyResponse->trade_status   = $Request->getRequestParam('trade_status');
         $NotifyResponse->notify_data    = $Request->getRequestParams();
         return $NotifyResponse;
     }
@@ -42,7 +42,7 @@ class Notify implements NotifyInterface
     private function check(ServerRequestInterface $Request) : int
     {
         $sign_str   = $this->getSignString($Request);
-        $sign       = $Request->getPostParam('sign');
+        $sign       = $Request->getRequestParam('sign');
         return $this->verifySign($sign_str, $sign);
     }
 
@@ -79,7 +79,7 @@ class Notify implements NotifyInterface
         $data       = array_merge($Request->getPostParams(), $Request->getQueryParams());
         ksort($data);
         foreach($data AS $key => $value){
-            if($this->checkIsSignKey($key)){
+            if($this->checkIsSignKey($key, $value)){
                 $sign_data[]    = "{$key}={$value}";
             }
         }
@@ -96,9 +96,9 @@ class Notify implements NotifyInterface
      * @param string $key 本实例的键名
      * @return bool
      */
-    private function checkIsSignKey($key) : bool
+    private function checkIsSignKey($key, $value) : bool
     {
-        if($key != 'sign' && $key != 'sign_type' && $this->checkIsEmpty($this->{$key}) == false && "@" != substr($this->{$key}, 0, 1)){
+        if($key != 'sign' && $key != 'sign_type' && $this->checkIsEmpty($value) == false && "@" != substr($value, 0, 1)){
             return true;
         }
         return false;

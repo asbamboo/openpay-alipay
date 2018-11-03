@@ -8,14 +8,14 @@ use asbamboo\openpay\channel\v1_0\trade\payParameter\Response;
 use asbamboo\helper\env\Env AS EnvHelper;
 use asbamboo\openpayAlipay\Env;
 use asbamboo\openpayAlipay\alipayApi\Client;
-use asbamboo\openpayAlipay\alipayApi\response\TradePagePayResponse;
-use asbamboo\openpay\apiStore\exception\Api3NotSuccessResponseException;
-use asbamboo\api\apiStore\ApiResponseParams;
 use asbamboo\openpayAlipay\exception\ResponseFormatException;
 use asbamboo\api\exception\ApiException;
+use asbamboo\openpayAlipay\channel\v1_0\traits\NotifyTrait;
 
 class PayAlipayPc implements PayInterface
 {
+    use NotifyTrait;
+
     /**
      *
      * {@inheritDoc}
@@ -38,23 +38,14 @@ class PayAlipayPc implements PayInterface
                     $request_data[$alipay_key] = $alipay_value;
                 }
             }
+            $TradePagePay           = Client::createRequest('TradePagePay')->assignData($request_data);
+            $redirect_data          = $TradePagePay->getAssignData();
+            $redirect_url           = (string) $TradePagePay->getGateway() . '?charset=' . $redirect_data['charset'];
 
-            $AlipayResponse = Client::request('TradePagePay', $request_data);
-            if(     $AlipayResponse->get('code') != TradePagePayResponse::CODE_SUCCESS
-                ||  $AlipayResponse->get('sub_code') != null
-                ){
-                    $Exception                      = new Api3NotSuccessResponseException('支付宝返回的响应值表示这次业务没有处理成功。');
-                    $ApiResponseParams              = new ApiResponseParams();
-                    $ApiResponseParams->code        = $AlipayResponse->get('code');
-                    $ApiResponseParams->msg         = $AlipayResponse->get('msg');
-                    $ApiResponseParams->sub_code    = $AlipayResponse->get('sub_code');
-                    $ApiResponseParams->sub_msg     = $AlipayResponse->get('sub_msg');
-                    $Exception->setApiResponseParams($ApiResponseParams);
-                    throw $Exception;
-            }
             $Response               = new Response();
-            $Response->setIsRedirect(true);
-            $Response->setQrCode($AlipayResponse->get('qr_code'));
+            $Response->setRedirectType(Response::REDIRECT_TYPE_PC);
+            $Response->setRedirectUrl($redirect_url);
+            $Response->setRedirectData($redirect_data);
             return $Response;
         }catch(ResponseFormatException $e){
             throw new ApiException($e->getMessage());

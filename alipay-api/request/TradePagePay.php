@@ -56,4 +56,13 @@ class TradePagePay implements RequestInterface
 
         return $this;
     }
+
+    /**
+     *
+     * @return array|NULL
+     */
+    public function getAssignData() : ?array
+    {
+        return $this->assign_data;
+    }
 }
