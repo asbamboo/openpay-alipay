@@ -35,16 +35,17 @@ class Notify implements NotifyInterface
     }
 
     /**
-     *
+     * 验证是否是一个合法的请求
      * @param ServerRequestInterface $Request
+     * @return int
      */
-    private function check(ServerRequestInterface $Request) : void
+    private function check(ServerRequestInterface $Request) : int
     {
         $sign_str   = $this->getSignString($Request);
         $sign       = $Request->getPostParam('sign');
-        return $this->verifySign($sign_str, $sign); 
+        return $this->verifySign($sign_str, $sign);
     }
-    
+
     /**
      * 验证签名
      * 如果返回 1 表示验证通过
@@ -64,7 +65,7 @@ class Notify implements NotifyInterface
         $ssl    = openssl_get_publickey($public_pem);
         $verify = openssl_verify($sign_source, $sign, $ssl, OPENSSL_ALGO_SHA256);
         openssl_free_key($ssl);
-        
+
         return $verify;
     }
     /**
@@ -84,7 +85,7 @@ class Notify implements NotifyInterface
         }
         return implode('&', $sign_data);
     }
-    
+
     /**
      * 判断一个本实例的一个属性，是不是应该当做签名字符串的一部分。
      *
@@ -102,7 +103,7 @@ class Notify implements NotifyInterface
         }
         return false;
     }
-    
+
     /**
      * 判断一个参数的值是否是空
      *
@@ -119,15 +120,15 @@ class Notify implements NotifyInterface
         if(!isset($value)){
             return true;
         }
-        
+
         if($value === null){
             return true;
         }
-        
+
         if(trim($value) === ""){
             return true;
         }
-        
+
         return false;
     }
 }

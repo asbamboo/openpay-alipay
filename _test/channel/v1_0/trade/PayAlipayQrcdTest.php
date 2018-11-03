@@ -13,20 +13,20 @@ class PayAlipayQrcdTest extends TestCase
 {
     public $server;
     public $request;
-    
+
     public function setUp()
     {
         $this->server   = $_SERVER;
         $this->request  = $_REQUEST;
     }
-    
+
     public function tearDown()
     {
-        $_SERVER        = $this->server; 
+        $_SERVER        = $this->server;
         $_REQUEST       = $this->request;
-        
+
     }
-    
+
     public function testExecute()
     {
         $_SERVER['REQUEST_URI']     = '/api';
