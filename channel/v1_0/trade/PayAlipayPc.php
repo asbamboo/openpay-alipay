@@ -56,6 +56,7 @@ class PayAlipayPc implements PayInterface
             throw new ApiException($e->getMessage());
         }
     }
+    
     /**
      *
      * {@inheritDoc}
