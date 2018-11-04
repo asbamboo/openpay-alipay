@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
  * @author 李春寅 <licy2013@aliyun.com>
  * @since 2018年10月26日
  */
-class PayAlipayQrcdTest extends TestCase
+class PayAlipayPcTest extends TestCase
 {
     public $server;
     public $request;
@@ -32,8 +32,8 @@ class PayAlipayQrcdTest extends TestCase
         $_REQUEST['api_name']       = 'trade.pay';
         $_REQUEST['version']        = 'v1.0';
         $_REQUEST['format']         = 'json';
-        $_REQUEST['channel']        = 'ALIPAY_QRCD';
-        $_REQUEST['title']          = 'test ALIPAY_QRCD';
+        $_REQUEST['channel']        = 'ALIPAY_PC';
+        $_REQUEST['title']          = 'test ALIPAY_PC';
         $_REQUEST['out_trade_no']   = strtotime('YmdHis') . rand(0, 9999);
         $_REQUEST['total_fee']      = rand(0, 9999);
         $_REQUEST['client_ip']      = '123.123.123.123';
@@ -46,6 +46,6 @@ class PayAlipayQrcdTest extends TestCase
 //         var_dump($data);
 //         exit;
         $this->assertContains('Redirecting', $data);
-        $this->assertContains('qr_code', $data);
+        $this->assertContains('form', $data);
     }
 }
