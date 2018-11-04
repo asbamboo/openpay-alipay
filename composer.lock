@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "aa490a7ca3eff7e1f9fba4e51ab2b692",
@@ -286,12 +286,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbamboo/openpay.git",
-                "reference": "21ae83eb9a6f53f84493e40763befc8a28e9021a"
+                "reference": "20e12ca246cc0e54291aa1daa07442cd57949afd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbamboo/openpay/zipball/21ae83eb9a6f53f84493e40763befc8a28e9021a",
-                "reference": "21ae83eb9a6f53f84493e40763befc8a28e9021a",
+                "url": "https://api.github.com/repos/asbamboo/openpay/zipball/20e12ca246cc0e54291aa1daa07442cd57949afd",
+                "reference": "20e12ca246cc0e54291aa1daa07442cd57949afd",
                 "shasum": ""
             },
             "require": {
@@ -329,7 +329,7 @@
                 "source": "https://github.com/asbamboo/openpay/tree/1.0.0",
                 "issues": "https://github.com/asbamboo/openpay/issues"
             },
-            "time": "2018-11-02T10:01:32+00:00"
+            "time": "2018-11-03T13:17:41+00:00"
         },
         {
             "name": "asbamboo/router",
@@ -2236,12 +2236,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a406c85c51edd76ace29119179d8c21f590c939e"
+                "reference": "bcbb5e070a7068df8a6daa3028940566bc2929b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a406c85c51edd76ace29119179d8c21f590c939e",
-                "reference": "a406c85c51edd76ace29119179d8c21f590c939e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/bcbb5e070a7068df8a6daa3028940566bc2929b7",
+                "reference": "bcbb5e070a7068df8a6daa3028940566bc2929b7",
                 "shasum": ""
             },
             "require": {
@@ -2312,7 +2312,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-10-29T10:13:31+00:00"
+            "time": "2018-11-03T14:21:03+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

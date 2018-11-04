@@ -12,6 +12,11 @@ use asbamboo\openpayAlipay\exception\ResponseFormatException;
 use asbamboo\api\exception\ApiException;
 use asbamboo\openpayAlipay\channel\v1_0\traits\NotifyTrait;
 
+/**
+ * openpay[trade.pay] 渠道:支付宝PC支付
+ * @author 李春寅<licy2013@aliyun.com>
+ * @since 2018年11月4日
+ */
 class PayAlipayPc implements PayInterface
 {
     use NotifyTrait;
@@ -51,6 +56,7 @@ class PayAlipayPc implements PayInterface
             throw new ApiException($e->getMessage());
         }
     }
+    
     /**
      *
      * {@inheritDoc}
