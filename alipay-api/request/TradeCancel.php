@@ -1,27 +1,26 @@
 <?php
 namespace asbamboo\openpayAlipay\alipayApi\request;
 
+
 use asbamboo\openpayAlipay\alipayApi\gateway\GatewayUriTrait;
 use asbamboo\openpayAlipay\alipayApi\request\tool\BodyTrait;
 use asbamboo\openpayAlipay\alipayApi\request\tool\UriTrait;
 use asbamboo\openpayAlipay\alipayApi\request\tool\CreateRequestTrait;
-use asbamboo\openpayAlipay\alipayApi\requestParams\bizContent\TradeQueryParams;
+use asbamboo\openpayAlipay\alipayApi\requestParams\bizContent\TradeCancelParams;
 use asbamboo\openpayAlipay\alipayApi\requestParams\CommonParams;
 
 /**
- * alipay.trade.query(统一收单线下交易查询)
+ * alipay.trade.cancel(统一收单交易撤销接口)
  *
- * 该接口提供所有支付宝支付订单的查询，商户可以通过该接口主动查询订单状态，完成下一步的业务逻辑。
- * 需要调用查询接口的情况：
- *  - 当商户后台、网络、服务器等出现异常，商户系统最终未接收到支付通知；
- *  - 调用支付接口后，返回系统错误或未知交易状态情况；
- *  - 调用alipay.trade.pay，返回INPROCESS的状态；
- *  - 调用alipay.trade.cancel之前，需确认支付状态；
+ *  - 支付交易返回失败或支付系统超时，调用该接口撤销交易。如果此订单用户支付失败，支付宝系统会将此订单关闭；
+ *  - 如果用户支付成功，支付宝系统会将此订单资金退还给用户。
+ *  - 注意：只有发生支付系统超时或者支付结果未知时可调用撤销，其他正常支付的单如需实现相同功能请调用申请退款API。
+ *  - 提交支付交易后调用【查询订单API】，没有明确的支付结果再调用【撤销订单API】。
  *
  * @author 李春寅<licy2013@aliyun.com>
- * @since 2018年10月27日
+ * @since 2018年11月6日
  */
-class TradeQuery implements RequestInterface
+class TradeCancel implements RequestInterface
 {
     use GatewayUriTrait;
     use BodyTrait;
@@ -34,7 +33,7 @@ class TradeQuery implements RequestInterface
      *
      * @var string
      */
-    const METHOD    = 'alipay.trade.query';
+    const METHOD    = 'alipay.trade.cancel';
 
     /**
      * 指派参数的数据集合
@@ -50,7 +49,7 @@ class TradeQuery implements RequestInterface
      */
     public function assignData(array $assign_data): RequestInterface
     {
-        $BizContent     = new TradeQueryParams();
+        $BizContent     = new TradeCancelParams();
         $CommonParams   = new CommonParams();
 
         $BizContent->mappingData($assign_data);

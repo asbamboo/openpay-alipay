@@ -5,23 +5,18 @@ use asbamboo\openpayAlipay\alipayApi\gateway\GatewayUriTrait;
 use asbamboo\openpayAlipay\alipayApi\request\tool\BodyTrait;
 use asbamboo\openpayAlipay\alipayApi\request\tool\UriTrait;
 use asbamboo\openpayAlipay\alipayApi\request\tool\CreateRequestTrait;
-use asbamboo\openpayAlipay\alipayApi\requestParams\bizContent\TradeQueryParams;
+use asbamboo\openpayAlipay\alipayApi\requestParams\bizContent\TradeCloseParams;
 use asbamboo\openpayAlipay\alipayApi\requestParams\CommonParams;
 
 /**
- * alipay.trade.query(统一收单线下交易查询)
+ * alipay.trade.close(统一收单交易关闭接口)
  *
- * 该接口提供所有支付宝支付订单的查询，商户可以通过该接口主动查询订单状态，完成下一步的业务逻辑。
- * 需要调用查询接口的情况：
- *  - 当商户后台、网络、服务器等出现异常，商户系统最终未接收到支付通知；
- *  - 调用支付接口后，返回系统错误或未知交易状态情况；
- *  - 调用alipay.trade.pay，返回INPROCESS的状态；
- *  - 调用alipay.trade.cancel之前，需确认支付状态；
+ * 用于交易创建后，用户在一定时间内未进行支付，可调用该接口直接将未付款的交易进行关闭。
  *
- * @author 李春寅<licy2013@aliyun.com>
- * @since 2018年10月27日
+ * @author 李春寅 <licy2013@aliyun.com>
+ * @since 2018年11月6日
  */
-class TradeQuery implements RequestInterface
+class TradeClose implements RequestInterface
 {
     use GatewayUriTrait;
     use BodyTrait;
@@ -34,7 +29,7 @@ class TradeQuery implements RequestInterface
      *
      * @var string
      */
-    const METHOD    = 'alipay.trade.query';
+    const METHOD    = 'alipay.trade.close';
 
     /**
      * 指派参数的数据集合
@@ -50,7 +45,7 @@ class TradeQuery implements RequestInterface
      */
     public function assignData(array $assign_data): RequestInterface
     {
-        $BizContent     = new TradeQueryParams();
+        $BizContent     = new TradeCloseParams();
         $CommonParams   = new CommonParams();
 
         $BizContent->mappingData($assign_data);
