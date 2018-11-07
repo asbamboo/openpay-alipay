@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "aa490a7ca3eff7e1f9fba4e51ab2b692",
@@ -286,12 +286,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbamboo/openpay.git",
-                "reference": "20e12ca246cc0e54291aa1daa07442cd57949afd"
+                "reference": "695656db81f475c40f52b84524a5c49031f0cdab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbamboo/openpay/zipball/20e12ca246cc0e54291aa1daa07442cd57949afd",
-                "reference": "20e12ca246cc0e54291aa1daa07442cd57949afd",
+                "url": "https://api.github.com/repos/asbamboo/openpay/zipball/695656db81f475c40f52b84524a5c49031f0cdab",
+                "reference": "695656db81f475c40f52b84524a5c49031f0cdab",
                 "shasum": ""
             },
             "require": {
@@ -329,7 +329,7 @@
                 "source": "https://github.com/asbamboo/openpay/tree/1.0.0",
                 "issues": "https://github.com/asbamboo/openpay/issues"
             },
-            "time": "2018-11-03T13:17:41+00:00"
+            "time": "2018-11-06T08:16:34+00:00"
         },
         {
             "name": "asbamboo/router",
@@ -676,12 +676,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "bef35e9024cca9e4e758b4fed274e8a03dfa8a94"
+                "reference": "88b80bf35068e3f29cbe0e03c351bd9320ca0728"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/bef35e9024cca9e4e758b4fed274e8a03dfa8a94",
-                "reference": "bef35e9024cca9e4e758b4fed274e8a03dfa8a94",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/88b80bf35068e3f29cbe0e03c351bd9320ca0728",
+                "reference": "88b80bf35068e3f29cbe0e03c351bd9320ca0728",
                 "shasum": ""
             },
             "require": {
@@ -750,7 +750,7 @@
                 "php",
                 "queryobject"
             ],
-            "time": "2018-10-25T16:05:11+00:00"
+            "time": "2018-11-04T23:25:53+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -1921,12 +1921,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06"
+                "reference": "3660b2eed90abdf92ac2e9dae9a238d2701bfa77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/4ba436b55987b4bf311cb7c6ba82aa528aac0a06",
-                "reference": "4ba436b55987b4bf311cb7c6ba82aa528aac0a06",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/3660b2eed90abdf92ac2e9dae9a238d2701bfa77",
+                "reference": "3660b2eed90abdf92ac2e9dae9a238d2701bfa77",
                 "shasum": ""
             },
             "require": {
@@ -1976,7 +1976,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-08-05T17:53:17+00:00"
+            "time": "2018-11-04T18:50:11+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -2236,12 +2236,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "bcbb5e070a7068df8a6daa3028940566bc2929b7"
+                "reference": "9754efc737a576523e97e496346dd7accdabb6e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/bcbb5e070a7068df8a6daa3028940566bc2929b7",
-                "reference": "bcbb5e070a7068df8a6daa3028940566bc2929b7",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9754efc737a576523e97e496346dd7accdabb6e2",
+                "reference": "9754efc737a576523e97e496346dd7accdabb6e2",
                 "shasum": ""
             },
             "require": {
@@ -2312,7 +2312,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-11-03T14:21:03+00:00"
+            "time": "2018-11-06T20:49:12+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
