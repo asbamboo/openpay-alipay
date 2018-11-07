@@ -16,14 +16,14 @@ use asbamboo\api\exception\ApiException;
 
 /**
  * 发起支付宝退款请求
- * 
+ *
  * @author 李春寅<licy2013@aliyun.com>
  * @since 2018年11月5日
  */
 class RefundAlipay implements RefundInterface
 {
     /**
-     * 
+     *
      * {@inheritDoc}
      * @see \asbamboo\openpay\channel\v1_0\trade\RefundInterface::execute()
      */
@@ -36,7 +36,7 @@ class RefundAlipay implements RefundInterface
                 'refund_amount'     => bcdiv($Request->getRefundFee(), 100, 2), //聚合接口接收的单位是分，支付宝的单位是元,
                 'out_request_no'    => $Request->getInRefundNo(),
             ];
-            
+
             $AlipayResponse = Client::request('TradeRefund', $request_data);
             if(     $AlipayResponse->get('code') != TradeRefundResponse::CODE_SUCCESS
                 ||  $AlipayResponse->get('sub_code') != null
@@ -54,13 +54,13 @@ class RefundAlipay implements RefundInterface
             $Response->setInRefundNo($Request->getInRefundNo());
             $Response->setIsSuccess(true);
             $Response->setPayYmdhis($AlipayResponse->get('gmt_refund_pay'));
-            $Response->setRefundFee($AlipayResponse->get('refund_fee'));
+            $Response->setRefundFee(bcmul($AlipayResponse->get('refund_fee'), 100));
             return $Response;
         }catch(ResponseFormatException $e){
             throw new ApiException($e->getMessage());
         }
     }
-    
+
     /**
      *
      * {@inheritDoc}
