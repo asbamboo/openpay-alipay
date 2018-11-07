@@ -286,12 +286,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbamboo/openpay.git",
-                "reference": "695656db81f475c40f52b84524a5c49031f0cdab"
+                "reference": "d475e622ad6329893602fbb7ea2f9e314063846a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbamboo/openpay/zipball/695656db81f475c40f52b84524a5c49031f0cdab",
-                "reference": "695656db81f475c40f52b84524a5c49031f0cdab",
+                "url": "https://api.github.com/repos/asbamboo/openpay/zipball/d475e622ad6329893602fbb7ea2f9e314063846a",
+                "reference": "d475e622ad6329893602fbb7ea2f9e314063846a",
                 "shasum": ""
             },
             "require": {
@@ -307,9 +307,9 @@
             },
             "require-dev": {
                 "asbamboo/event": "^1.0",
-                "phpunit/phpunit": "^7.3@dev"
+                "phpunit/phpunit": "^7.2"
             },
-            "type": "project",
+            "type": "library",
             "autoload": {
                 "psr-4": {
                     "asbamboo\\openpay\\": ""
@@ -329,7 +329,7 @@
                 "source": "https://github.com/asbamboo/openpay/tree/1.0.0",
                 "issues": "https://github.com/asbamboo/openpay/issues"
             },
-            "time": "2018-11-06T08:16:34+00:00"
+            "time": "2018-11-07T11:53:54+00:00"
         },
         {
             "name": "asbamboo/router",

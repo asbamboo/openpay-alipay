@@ -54,7 +54,7 @@ class RefundAlipay implements RefundInterface
             $Response->setInRefundNo($Request->getInRefundNo());
             $Response->setIsSuccess(true);
             $Response->setPayYmdhis($AlipayResponse->get('gmt_refund_pay'));
-            $Response->setRefundFee($AlipayResponse->get('refund_fee'));
+            $Response->setRefundFee(bcmul($AlipayResponse->get('refund_fee'), 100));
             return $Response;
         }catch(ResponseFormatException $e){
             throw new ApiException($e->getMessage());
