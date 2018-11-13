@@ -37,7 +37,7 @@ trait NotifyTrait
          *  - TRADE_FINISHED（交易结束，不可退款）
          */
         if($NotifyResponse->trade_status == 'TRADE_CLOSED'){
-            $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_CANCLE);
+            $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_CANCEL);
         }else if($NotifyResponse->trade_status == 'TRADE_SUCCESS'){
             $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_PAYOK);
         }else if($NotifyResponse->trade_status == 'TRADE_SUCCESS'){

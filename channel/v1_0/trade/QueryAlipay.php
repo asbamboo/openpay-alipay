@@ -68,7 +68,7 @@ class QueryAlipay implements QueryInterface
     {
         return [
             'WAIT_BUYER_PAY'    => OpenpayConstant::TRADE_PAY_TRADE_STATUS_NOPAY, //（交易创建，等待买家付款）
-            'TRADE_CLOSED'      => OpenpayConstant::TRADE_PAY_TRADE_STATUS_CANCLE, //（未付款交易超时关闭，或支付完成后全额退款）
+            'TRADE_CLOSED'      => OpenpayConstant::TRADE_PAY_TRADE_STATUS_CANCEL, //（未付款交易超时关闭，或支付完成后全额退款）
             'TRADE_SUCCESS'     => OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYOK, //（未付款交易超时关闭，或支付完成后全额退款）
             'TRADE_FINISHED'    => OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYED, //（未付款交易超时关闭，或支付完成后全额退款）
         ][$alipay_trade_status];
