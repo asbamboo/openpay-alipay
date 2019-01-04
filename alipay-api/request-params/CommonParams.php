@@ -122,6 +122,9 @@ class CommonParams implements CommonParamsInterface
         $private_pem    = EnvHelper::get(Env::ALIPAY_RSA_PRIVATE_KEY);
         if(is_file($private_pem)){
             $private_pem    = 'file://' . $private_pem;
+        }else{
+            $private_pem    = trim($private_pem);
+            $private_pem    = wordwrap($private_pem, 64, "\n", true);
         }
         $ssl    = openssl_get_privatekey($private_pem);
         openssl_sign($sign_str, $sign, $ssl, OPENSSL_ALGO_SHA256);
