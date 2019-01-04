@@ -3,6 +3,7 @@ namespace asbamboo\openpayAlipay\alipayApi\requestParams;
 
 use asbamboo\helper\env\Env AS EnvHelper;
 use asbamboo\openpayAlipay\Env;
+use asbamboo\openpay\exception\OpenpayException;
 
 /**
  * 公共请求参数
@@ -122,11 +123,17 @@ class CommonParams implements CommonParamsInterface
         $private_pem    = EnvHelper::get(Env::ALIPAY_RSA_PRIVATE_KEY);
         if(is_file($private_pem)){
             $private_pem    = 'file://' . $private_pem;
+        }else{
+            $private_pem    = trim($private_pem);
+            $private_pem    = wordwrap($private_pem, 64, "\n", true);
         }
         $ssl    = openssl_get_privatekey($private_pem);
-        openssl_sign($sign_str, $sign, $ssl, OPENSSL_ALGO_SHA256);
-        openssl_free_key($ssl);
-        return base64_encode($sign);
+        if($ssl){
+            openssl_sign($sign_str, $sign, $ssl, OPENSSL_ALGO_SHA256);
+            openssl_free_key($ssl);
+            return base64_encode($sign);
+        }
+        throw new OpenpayException('无法生成签名。pem:' . $private_pem);
     }
 
     /**
