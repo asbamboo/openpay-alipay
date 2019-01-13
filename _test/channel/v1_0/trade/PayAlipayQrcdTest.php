@@ -42,10 +42,16 @@ class PayAlipayQrcdTest extends TestCase
         $data       = ob_get_contents();
         $headers    = ob_list_handlers();
         ob_end_clean();
-//         var_dump($headers);
-//         var_dump($data);
-//         exit;
-        $this->assertContains('Redirecting', $data);
+
+        $decode_data    = json_decode($data, true);
+
+        $this->assertEquals('0', $decode_data['code']);
+        $this->assertEquals('success', $decode_data['message']);
+        $this->assertEquals($_REQUEST['channel'], $decode_data['data']['channel']);
+        $this->assertEquals($_REQUEST['out_trade_no'], $decode_data['data']['out_trade_no']);
+        $this->assertEquals($_REQUEST['title'], $decode_data['data']['title']);
+        $this->assertEquals($_REQUEST['total_fee'], $decode_data['data']['total_fee']);
+        $this->assertEquals($_REQUEST['client_ip'], $decode_data['data']['client_ip']);
         $this->assertContains('qr_code', $data);
     }
 }

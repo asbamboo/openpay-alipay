@@ -61,7 +61,7 @@ class PayAlipayQrcd implements PayInterface
                 throw $Exception;
             }
             $Response               = new Response();
-            $Response->setRedirectType(Response::REDIRECT_TYPE_QRCD);
+            $Response->setType(Response::TYPE_QRCD);
             $Response->setQrCode($AlipayResponse->get('qr_code'));
             return $Response;
         }catch(ResponseFormatException $e){
