@@ -49,7 +49,7 @@ class PayAlipayPc implements PayInterface
             $redirect_url           = (string) $TradePagePay->getGateway() . '?charset=' . $redirect_data['charset'];
 
             $Response               = new Response();
-            $Response->setRedirectType(Response::REDIRECT_TYPE_PC);
+            $Response->setType(Response::TYPE_PC);
             $Response->setRedirectUrl($redirect_url);
             $Response->setRedirectData($redirect_data);
             return $Response;
