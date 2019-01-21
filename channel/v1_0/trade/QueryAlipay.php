@@ -37,17 +37,31 @@ class QueryAlipay implements QueryInterface
             ];
 
             $AlipayResponse = Client::request('TradeQuery', $request_data);
+
+            /**
+             * 当Alipay返回的响应值表示订单没有创建时，应该用订单未支付的状态作为响应值。
+             */
+            if(     $AlipayResponse->get('code') == TradeQueryResponse::CODE_BUSINESS_FAILED
+                &&  $AlipayResponse->get('sub_code') == 'ACQ.TRADE_NOT_EXIST'
+            ){
+                $Response           = new Response();
+                $Response->setInTradeNo($Request->getInTradeNo());
+                $Response->setThirdTradeNo("");
+                $Response->setTradeStatus(OpenpayConstant::TRADE_PAY_TRADE_STATUS_NOPAY);
+                return $Response;
+            }
+
             if(     $AlipayResponse->get('code') != TradeQueryResponse::CODE_SUCCESS
                 ||  $AlipayResponse->get('sub_code') != null
-                ){
-                    $Exception                      = new Api3NotSuccessResponseException('支付宝返回的响应值表示这次业务没有处理成功。');
-                    $ApiResponseParams              = new ApiResponseParams();
-                    $ApiResponseParams->code        = $AlipayResponse->get('code');
-                    $ApiResponseParams->msg         = $AlipayResponse->get('msg');
-                    $ApiResponseParams->sub_code    = $AlipayResponse->get('sub_code');
-                    $ApiResponseParams->sub_msg     = $AlipayResponse->get('sub_msg');
-                    $Exception->setApiResponseParams($ApiResponseParams);
-                    throw $Exception;
+            ){
+                $Exception                      = new Api3NotSuccessResponseException('支付宝返回的响应值表示这次业务没有处理成功。');
+                $ApiResponseParams              = new ApiResponseParams();
+                $ApiResponseParams->code        = $AlipayResponse->get('code');
+                $ApiResponseParams->msg         = $AlipayResponse->get('msg');
+                $ApiResponseParams->sub_code    = $AlipayResponse->get('sub_code');
+                $ApiResponseParams->sub_msg     = $AlipayResponse->get('sub_msg');
+                $Exception->setApiResponseParams($ApiResponseParams);
+                throw $Exception;
             }
             $Response           = new Response();
             $Response->setInTradeNo($AlipayResponse->get('out_trade_no'));
