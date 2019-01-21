@@ -14,7 +14,8 @@ use asbamboo\openpayAlipay\exception\ResponseFormatException;
  */
 abstract class ResponseAbstract implements ResponseInterface
 {
-    const CODE_SUCCESS          = '10000';
+    const CODE_SUCCESS              = '10000';
+    const CODE_BUSINESS_FAILED      = '40004'; //业务处理失败, 对应业务错误码。
 
     /**
      * 必填 10000 接口调用成功，调用结果请参考具体的API文档所对应的业务返回参数
