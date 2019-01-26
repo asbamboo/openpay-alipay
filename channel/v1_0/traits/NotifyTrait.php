@@ -17,6 +17,16 @@ trait NotifyTrait
      * {@inheritDoc}
      * @see \asbamboo\openpay\channel\v1_0\trade\PayInterface::notify()
      */
+    public function getTradeNoKeyName() : string
+    {
+        return 'out_trade_no';
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     * @see \asbamboo\openpay\channel\v1_0\trade\PayInterface::notify()
+     */
     public function notify(ServerRequestInterface $Request) : NotifyResult
     {
         $Notify             = new Notify();
