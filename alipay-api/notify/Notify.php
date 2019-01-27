@@ -60,6 +60,9 @@ class Notify implements NotifyInterface
         $public_pem     = EnvHelper::get(Env::ALIPAY_RSA_ALIPAY_KEY);
         if(is_file($public_pem)){
             $public_pem    = 'file://' . $public_pem;
+        }else{
+            $public_pem    = trim($public_pem);
+            $public_pem    = wordwrap($public_pem, 64, "\n", true);
         }
         $sign   = base64_decode($sign);
         $ssl    = openssl_get_publickey($public_pem);
