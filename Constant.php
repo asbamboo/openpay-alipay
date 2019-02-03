@@ -16,5 +16,7 @@ final class Constant
     const CHANNEL_ALIPAY_QRCD_LABEL     = '支付宝扫码支付';
     const CHANNEL_ALIPAY_PC             = 'ALIPAY_PC';
     const CHANNEL_ALIPAY_PC_LABEL       = '支付宝PC支付';
+    const CHANNEL_ALIPAY_APP            = 'ALIPAY_APP';
+    const CHANNEL_ALIPAY_APP_LABEL      = '支付宝APP支付';
     /***********************************************************************************************/
 }
