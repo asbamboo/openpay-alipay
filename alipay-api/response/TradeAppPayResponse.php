@@ -7,7 +7,7 @@ namespace asbamboo\openpayAlipay\alipayApi\response;
  * @author 李春寅 <licy2013@aliyun.com>
  * @since 2018年11月3日
  */
-class TradeaPPPayResponse extends ResponseAbstract
+class TradeAppPayResponse extends ResponseAbstract
 {
     /**
      * 必填 商户订单号
