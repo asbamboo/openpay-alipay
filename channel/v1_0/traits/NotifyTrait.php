@@ -50,12 +50,22 @@ trait NotifyTrait
             $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_CANCEL);
         }else if($NotifyResponse->trade_status == 'TRADE_SUCCESS'){
             $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_PAYOK);
-        }else if($NotifyResponse->trade_status == 'TRADE_SUCCESS'){
+        }else if($NotifyResponse->trade_status == 'TRADE_FINISHED'){
             $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_PAYED);
         }else{
             $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_PAYING);
         }
 
         return $NotifyResult;
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     * @see \asbamboo\openpay\channel\v1_0\trade\PayInterface::return()
+     */
+    public function return(ServerRequestInterface $Request) : NotifyResult
+    {
+        return $this->notify($Request);
     }
 }

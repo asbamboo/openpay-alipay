@@ -11,6 +11,8 @@ use asbamboo\openpayAlipay\alipayApi\Client;
 use asbamboo\openpayAlipay\exception\ResponseFormatException;
 use asbamboo\api\exception\ApiException;
 use asbamboo\openpayAlipay\channel\v1_0\traits\NotifyTrait;
+use asbamboo\http\ServerRequestInterface;
+use asbamboo\openpay\channel\v1_0\trade\payParameter\NotifyResult;
 
 /**
  * openpay[trade.pay] 渠道:支付宝PC支付
@@ -54,6 +56,16 @@ class PayAlipayApp implements PayInterface
         }catch(ResponseFormatException $e){
             throw new ApiException($e->getMessage());
         }
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     * @see \asbamboo\openpay\channel\v1_0\trade\PayInterface::return()
+     */
+    public function return(ServerRequestInterface $Request) : NotifyResult
+    {
+
     }
 
     /**
