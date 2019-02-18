@@ -4,6 +4,8 @@ namespace asbamboo\openpayAlipay\channel\v1_0\traits;
 use asbamboo\http\ServerRequestInterface;
 use asbamboo\openpay\channel\v1_0\trade\payParameter\NotifyResult;
 use asbamboo\openpayAlipay\alipayApi\notify\Notify;
+use asbamboo\openpay\Constant AS OpenpayConstant;
+use asbamboo\openpayAlipay\Constant;
 
 /**
  *
@@ -46,14 +48,14 @@ trait NotifyTrait
          *  - TRADE_SUCCESS（交易支付成功）、
          *  - TRADE_FINISHED（交易结束，不可退款）
          */
-        if($NotifyResponse->trade_status == 'TRADE_CLOSED'){
-            $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_CANCEL);
-        }else if($NotifyResponse->trade_status == 'TRADE_SUCCESS'){
-            $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_PAYOK);
-        }else if($NotifyResponse->trade_status == 'TRADE_FINISHED'){
-            $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_PAYED);
+        if($NotifyResponse->trade_status == Constant::TRADE_CLOSED){
+            $NotifyResult->setTradeStatus(OpenpayConstant::TRADE_PAY_TRADE_STATUS_CANCEL);
+        }else if($NotifyResponse->trade_status == Constant::TRADE_SUCCESS){
+            $NotifyResult->setTradeStatus(OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYOK);
+        }else if($NotifyResponse->trade_status == Constant::TRADE_FINISHED){
+            $NotifyResult->setTradeStatus(OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYED);
         }else{
-            $NotifyResult->setTradeStatus(\asbamboo\openpay\Constant::TRADE_PAY_TRADE_STATUS_PAYING);
+            $NotifyResult->setTradeStatus(OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYING);
         }
 
         return $NotifyResult;

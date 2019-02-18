@@ -2,6 +2,7 @@
 namespace asbamboo\openpayAlipay\channel\v1_0\trade;
 
 use asbamboo\openpayAlipay\Constant;
+use asbamboo\openpay\Constant AS OpenpayConstant;
 use asbamboo\openpay\channel\v1_0\trade\PayInterface;
 use asbamboo\openpay\channel\v1_0\trade\payParameter\Request;
 use asbamboo\openpay\channel\v1_0\trade\payParameter\Response;
@@ -13,6 +14,7 @@ use asbamboo\api\exception\ApiException;
 use asbamboo\openpayAlipay\channel\v1_0\traits\NotifyTrait;
 use asbamboo\http\ServerRequestInterface;
 use asbamboo\openpay\channel\v1_0\trade\payParameter\NotifyResult;
+use asbamboo\openpayAlipay\alipayApi\notify\AppReturn;
 
 /**
  * openpay[trade.pay] 渠道:支付宝PC支付
@@ -65,7 +67,31 @@ class PayAlipayApp implements PayInterface
      */
     public function return(ServerRequestInterface $Request) : NotifyResult
     {
+        $AppReturn      = new AppReturn();
+        $NotifyResult   = new NotifyResult();
+        $NotifyResponse = $AppReturn->exec($Request);
+        $NotifyResult->setInTradeNo($NotifyResponse->out_trade_no);
+        $NotifyResult->setThirdTradeNo($NotifyResponse->trade_no);
+        $NotifyResult->setThirdPart(json_encode($NotifyResponse->notify_data));
 
+        /**
+         * 交易状态：
+         *  - WAIT_BUYER_PAY（交易创建，等待买家付款）、
+         *  - TRADE_CLOSED（未付款交易超时关闭，或支付完成后全额退款）、
+         *  - TRADE_SUCCESS（交易支付成功）、
+         *  - TRADE_FINISHED（交易结束，不可退款）
+         */
+        if($NotifyResponse->trade_status == Constant::TRADE_CLOSED){
+            $NotifyResult->setTradeStatus(OpenpayConstant::TRADE_PAY_TRADE_STATUS_CANCEL);
+        }else if($NotifyResponse->trade_status == Constant::TRADE_SUCCESS){
+            $NotifyResult->setTradeStatus(OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYOK);
+        }else if($NotifyResponse->trade_status == Constant::TRADE_FINISHED){
+            $NotifyResult->setTradeStatus(OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYED);
+        }else{
+            $NotifyResult->setTradeStatus(OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYING);
+        }
+
+        return $NotifyResult;
     }
 
     /**

@@ -19,4 +19,13 @@ final class Constant
     const CHANNEL_ALIPAY_APP            = 'ALIPAY_APP';
     const CHANNEL_ALIPAY_APP_LABEL      = '支付宝APP支付';
     /***********************************************************************************************/
+
+    /************************************************************************************************
+     * 支付宝 trade_status参数的取值
+     ***********************************************************************************************/
+    const WAIT_BUYER_PAY                = 'WAIT_BUYER_PAY';
+    const TRADE_CLOSED                  = 'TRADE_CLOSED';
+    const TRADE_SUCCESS                 = 'TRADE_SUCCESS';
+    const TRADE_FINISHED                = 'TRADE_FINISHED';
+    /***********************************************************************************************/
 }
