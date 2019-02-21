@@ -90,7 +90,6 @@ class PayAlipayApp implements PayInterface
         }else{
             $NotifyResult->setTradeStatus(OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYING);
         }
-
         return $NotifyResult;
     }
 

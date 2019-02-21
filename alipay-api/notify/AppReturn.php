@@ -60,13 +60,13 @@ class AppReturn implements NotifyInterface
             throw new TradeAppPayReturnCodeException('支付失败。');
         }
 
-        if($TradeAppPayResponse->get('out_trade_no')){
+        if(empty($TradeAppPayResponse->get('out_trade_no'))){
             throw new TradeAppPayReturnOutTradeNoException('支付宝响应值缺少out_trade_no参数');
         }
 
         if($result_status == self::RESULT_STATUS_SUCCESS){
-            $NotifyResponse->trade_no       = $TradeAppPayResponse->get('out_trade_no');
-            $NotifyResponse->out_trade_no   = $TradeAppPayResponse->get('trade_no');
+            $NotifyResponse->trade_no       = $TradeAppPayResponse->get('trade_no');
+            $NotifyResponse->out_trade_no   = $TradeAppPayResponse->get('out_trade_no');
             $NotifyResponse->trade_status   = Constant::TRADE_SUCCESS;
         }else{
             $request_data           = [
@@ -78,8 +78,8 @@ class AppReturn implements NotifyInterface
             if($AlipayResponse->get('code') == TradeQueryResponse::CODE_SUCCESS){
                 throw new TradeAppPayReturnStatusUnknownException('支付状态不确定。');
             }
-            $NotifyResponse->trade_no       = $AlipayResponse->get('out_trade_no');
-            $NotifyResponse->out_trade_no   = $AlipayResponse->get('trade_no');
+            $NotifyResponse->trade_no       = $AlipayResponse->get('trade_no');
+            $NotifyResponse->out_trade_no   = $AlipayResponse->get('out_trade_no');
             $NotifyResponse->trade_status   = $AlipayResponse->get('trade_status');
         }
 
