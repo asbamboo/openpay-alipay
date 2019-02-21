@@ -52,6 +52,7 @@ class AppReturn implements NotifyInterface
 
         $HttpResponse   = new Response(new Stream('php://temp', 'w+b'));
         $HttpResponse->getBody()->write($result);
+        $HttpResponse->getBody()->rewind();
 
         $TradeAppPayResponse    = new TradeAppPayResponse($HttpResponse);
 
