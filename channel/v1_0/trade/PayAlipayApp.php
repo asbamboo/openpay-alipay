@@ -50,10 +50,14 @@ class PayAlipayApp implements PayInterface
             }
             $TradeAppPay            = Client::createRequest('TradeAppPay')->assignData($request_data);
             $reqeust_data           = $TradeAppPay->getAssignData();
+            $reqeust_gateway        = $TradeAppPay->getGateway()->__toString();
 
             $Response               = new Response();
             $Response->setType(Response::TYPE_APP);
-            $Response->setAppPayJson(json_encode($reqeust_data));
+            $Response->setAppPayJson(json_encode([
+                'gateway'   => $reqeust_gateway,
+                'data'      => $reqeust_data,
+            ]));
             return $Response;
         }catch(ResponseFormatException $e){
             throw new ApiException($e->getMessage());
