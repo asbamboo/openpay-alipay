@@ -81,10 +81,10 @@ class QueryAlipay implements QueryInterface
     private function convertTradeStatus(string $alipay_trade_status)
     {
         return [
-            'WAIT_BUYER_PAY'    => OpenpayConstant::TRADE_PAY_TRADE_STATUS_NOPAY, //（交易创建，等待买家付款）
-            'TRADE_CLOSED'      => OpenpayConstant::TRADE_PAY_TRADE_STATUS_CANCEL, //（未付款交易超时关闭，或支付完成后全额退款）
-            'TRADE_SUCCESS'     => OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYOK, //（未付款交易超时关闭，或支付完成后全额退款）
-            'TRADE_FINISHED'    => OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYED, //（未付款交易超时关闭，或支付完成后全额退款）
+            Constant::WAIT_BUYER_PAY => OpenpayConstant::TRADE_PAY_TRADE_STATUS_NOPAY, //（交易创建，等待买家付款）
+            Constant::TRADE_CLOSED   => OpenpayConstant::TRADE_PAY_TRADE_STATUS_CANCEL, //（未付款交易超时关闭，或支付完成后全额退款）
+            Constant::TRADE_SUCCESS  => OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYOK, //（未付款交易超时关闭，或支付完成后全额退款）
+            Constant::TRADE_FINISHED => OpenpayConstant::TRADE_PAY_TRADE_STATUS_PAYED, //（未付款交易超时关闭，或支付完成后全额退款）
         ][$alipay_trade_status];
     }
 
@@ -97,6 +97,7 @@ class QueryAlipay implements QueryInterface
     {
         return [
             Constant::CHANNEL_ALIPAY_PC     => Constant::CHANNEL_ALIPAY_PC_LABEL,
+            Constant::CHANNEL_ALIPAY_APP    => Constant::CHANNEL_ALIPAY_APP_LABEL,
             Constant::CHANNEL_ALIPAY_QRCD   => Constant::CHANNEL_ALIPAY_QRCD_LABEL,
         ];
     }
