@@ -35,7 +35,12 @@ class QueryAlipay implements QueryInterface
                 'app_id'            => (string) EnvHelper::get(Env::ALIPAY_APP_ID),
                 'out_trade_no'      => $Request->getInTradeNo(),
             ];
-
+            $alipay_params          = json_decode((string) $Request->getThirdPart(), true);
+            if(is_array($alipay_params)){
+                foreach($alipay_params AS $alipay_key => $alipay_value){
+                    $request_data[$alipay_key] = $alipay_value;
+                }
+            }
             $AlipayResponse = Client::request('TradeQuery', $request_data);
 
             /**
