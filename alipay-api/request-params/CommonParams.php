@@ -124,8 +124,9 @@ class CommonParams implements CommonParamsInterface
         if(is_file($private_pem)){
             $private_pem    = 'file://' . $private_pem;
         }else{
-            $private_pem    = trim($private_pem);
+            $private_pem    = preg_replace('@(-----BEGIN RSA PRIVATE KEY-----|-----END RSA PRIVATE KEY-----|\s)@', '', $private_pem);
             $private_pem    = wordwrap($private_pem, 64, "\n", true);
+            $private_pem    = "-----BEGIN RSA PRIVATE KEY-----\n" . $private_pem . "\n-----END RSA PRIVATE KEY-----";
         }
         $ssl    = openssl_get_privatekey($private_pem);
         if($ssl){
