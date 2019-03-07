@@ -70,6 +70,7 @@ class RefundAlipay implements RefundInterface
     {
         return [
             Constant::CHANNEL_ALIPAY_PC     => Constant::CHANNEL_ALIPAY_PC_LABEL,
+            Constant::CHANNEL_ALIPAY_APP    => Constant::CHANNEL_ALIPAY_APP_LABEL,
             Constant::CHANNEL_ALIPAY_QRCD   => Constant::CHANNEL_ALIPAY_QRCD_LABEL,
         ];
     }

@@ -61,8 +61,9 @@ class Notify implements NotifyInterface
         if(is_file($public_pem)){
             $public_pem    = 'file://' . $public_pem;
         }else{
-            $public_pem    = trim($public_pem);
+            $public_pem    = preg_replace('@(-----BEGIN PUBLIC KEY-----|-----END PUBLIC KEY-----|\s)@', '', $public_pem);
             $public_pem    = wordwrap($public_pem, 64, "\n", true);
+            $public_pem     = "-----BEGIN PUBLIC KEY-----\n" . $public_pem . "\n-----END PUBLIC KEY-----";
         }
         $sign   = base64_decode($sign);
         $ssl    = openssl_get_publickey($public_pem);

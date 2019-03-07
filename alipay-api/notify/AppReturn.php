@@ -5,7 +5,14 @@ use asbamboo\http\ServerRequestInterface;
 use asbamboo\http\Response;
 use asbamboo\http\Stream;
 use asbamboo\openpayAlipay\alipayApi\response\TradeAppPayResponse;
-use asbamboo\openpayAlipay\alipayApi\response\ResponseAbstract;
+use asbamboo\openpayAlipay\exception\TradeAppPayReturnCodeException;
+use asbamboo\openpayAlipay\exception\TradeAppPayReturnOutTradeNoException;
+use asbamboo\openpayAlipay\alipayApi\Client;
+use asbamboo\helper\env\Env as EnvHelper;
+use asbamboo\openpayAlipay\Env;
+use asbamboo\openpayAlipay\alipayApi\response\TradeQueryResponse;
+use asbamboo\openpayAlipay\Constant;
+use asbamboo\openpayAlipay\exception\TradeAppPayReturnStatusUnknownException;
 
 /**
  * 在支付宝开发社区中发过帖子问了关于返回状态码的问题，除了9000表示支付已经成功以外，其他状态具有不确定性，需要通过查询接口确定订单的状态
@@ -39,26 +46,41 @@ class AppReturn implements NotifyInterface
         $result         = $Request->getRequestParam("result");
         $result_status  = $Request->getRequestParam("resultStatus");
         $memo           = $Request->getRequestParam("memo");
-        $NotifyResponse = new NotifyResponse();
+
+        $NotifyResponse                 = new NotifyResponse();
+        $NotifyResponse->notify_data    = $Request->getRequestParams();
 
         $HttpResponse   = new Response(new Stream('php://temp', 'w+b'));
         $HttpResponse->getBody()->write($result);
+        $HttpResponse->getBody()->rewind();
 
         $TradeAppPayResponse    = new TradeAppPayResponse($HttpResponse);
 
-        if($TradeAppPayResponse->get('code') != ResponseAbstract::CODE_SUCCESS){
-
+        if($TradeAppPayResponse->get('code') != TradeAppPayResponse::CODE_SUCCESS){
+            throw new TradeAppPayReturnCodeException('支付失败。');
         }
 
+        if(empty($TradeAppPayResponse->get('out_trade_no'))){
+            throw new TradeAppPayReturnOutTradeNoException('支付宝响应值缺少out_trade_no参数');
+        }
 
         if($result_status == self::RESULT_STATUS_SUCCESS){
-            $NotifyResponse->trade_no       = $TradeAppPayResponse->get('out_trade_no');
-            $NotifyResponse->out_trade_no   = $TradeAppPayResponse->get('trade_no');
-            $NotifyResponse->trade_status   = 'TRADE_SUCCESS';
-            $NotifyResponse->notify_data    = $Request->getRequestParams();
+            $NotifyResponse->trade_no       = $TradeAppPayResponse->get('trade_no');
+            $NotifyResponse->out_trade_no   = $TradeAppPayResponse->get('out_trade_no');
+            $NotifyResponse->trade_status   = Constant::TRADE_SUCCESS;
         }else{
-            $TradeAppPayResponse            = new TradeAppPayResponse($HttpResponse);
+            $request_data           = [
+                'app_id'            => (string) EnvHelper::get(Env::ALIPAY_APP_ID),
+                'out_trade_no'      => $Request->getInTradeNo(),
+            ];
+            $AlipayResponse         = Client::request('TradeQuery', $request_data);
 
+            if($AlipayResponse->get('code') == TradeQueryResponse::CODE_SUCCESS){
+                throw new TradeAppPayReturnStatusUnknownException('支付状态不确定。');
+            }
+            $NotifyResponse->trade_no       = $AlipayResponse->get('trade_no');
+            $NotifyResponse->out_trade_no   = $AlipayResponse->get('out_trade_no');
+            $NotifyResponse->trade_status   = $AlipayResponse->get('trade_status');
         }
 
         return $NotifyResponse;
