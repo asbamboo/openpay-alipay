@@ -42,5 +42,13 @@ asbamboo\\openpayAlipay\\Env 类中声明的几个常量，是使用 asbamboo//o
     EnvHelper::set(AlipayEnv::ALIPAY_APP_ID, 'xxxxxxxxxxxxxxxxx');
     /***************************************************************************************************/
 
+使用asbamboo/openpay-alipay模块后,交易支付（trade.pay）接口将支持如下渠道（channel字段）
+-------------------------------------------------------------------------------------------------------
+
+:ALIPAY_APP: 支付宝APP支付(手机app支付的服务端参数生成接口)
+:ALIPAY_PC: 支付宝PC电脑端支付
+:ALIPAY_QRCD: 支付宝扫码支付（买家手机扫商户）
+
+
 .. _asbamboo/openpay: http://www.github.com/asbamboo/openpay
 .. _查看文档: docs/index.rst
