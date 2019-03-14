@@ -41,7 +41,15 @@ class CancelAlipay implements CancelInterface
                     $request_data[$alipay_key] = $alipay_value;
                 }
             }
+            /**
+             * 当Alipay返回的响应值表示订单没有创建时，应该用订单未支付的状态作为响应值。
+             */
             $AlipayResponse = Client::request('TradeClose', $request_data);
+            if(     $AlipayResponse->get('code') == TradeCloseResponse::CODE_BUSINESS_FAILED
+                &&  $AlipayResponse->get('sub_code') == 'ACQ.TRADE_NOT_EXIST'
+                ){
+                    $AlipayResponse = Client::request('TradeCancel', $request_data);
+            }
             if(     $AlipayResponse->get('code') != TradeCloseResponse::CODE_SUCCESS
                 ||  $AlipayResponse->get('sub_code') != null
                 ){
