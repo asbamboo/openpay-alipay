@@ -4,7 +4,7 @@ namespace asbamboo\openpayAlipay\alipayApi\response;
 use asbamboo\http\ResponseInterface AS HttpResponseInterface;
 use asbamboo\helper\env\Env AS EnvHelper;
 use asbamboo\openpayAlipay\Env;
-use asbamboo\openpayAlipay\exception\ResponseFormatException;
+use asbamboo\openpay\apiStore\exception\Api3NotSuccessResponseException;
 
 /**
  * 响应结果公共参数
@@ -125,17 +125,17 @@ abstract class ResponseAbstract implements ResponseInterface
      *
      * @param string $json
      * @param array|null $decoded_json
-     * @throws ResponseFormatException
+     * @throws Api3NotSuccessResponseException
      */
     protected function checkResponse(string $json, $decoded_json) : void
     {
 
         if(empty($decoded_json)){
-            throw new ResponseFormatException(sprintf('支付宝返回的响应结果异常[%s]', $json));
+            throw new Api3NotSuccessResponseException(sprintf('支付宝返回的响应结果异常[%s]', $json));
         }
 
         if(!isset($decoded_json['sign'])){
-            throw new ResponseFormatException(sprintf('支付宝返回的响应结果异常,sign不存在[%s]', $json));
+            throw new Api3NotSuccessResponseException(sprintf('支付宝返回的响应结果异常,sign不存在[%s]', $json));
         }
 
         $sign_source_root_index     = strpos($json, $this->getResponseRootNode() . '":');
@@ -146,14 +146,14 @@ abstract class ResponseAbstract implements ResponseInterface
             $sign_source_start_index    = $sign_source_root_index + strlen($this->getErrorRootNode()) + 2;
         }
         if($sign_source_root_index === false){
-            throw new ResponseFormatException(sprintf('支付宝返回的响应结果异常,response node不存在[%s]', $json));
+            throw new Api3NotSuccessResponseException(sprintf('支付宝返回的响应结果异常,response node不存在[%s]', $json));
         }
         if($sign_source_end_index === false){
-            throw new ResponseFormatException(sprintf('支付宝返回的响应结果异常,sign node不存在[%s]', $json));
+            throw new Api3NotSuccessResponseException(sprintf('支付宝返回的响应结果异常,sign node不存在[%s]', $json));
         }
         $sign_source    = substr($json, $sign_source_start_index, $sign_source_end_index - $sign_source_start_index);
         if($this->verifySign($sign_source, $decoded_json['sign']) != 1){
-            throw new ResponseFormatException(sprintf('支付宝返回的响应结果异常,sign错误[%s]', $json));
+            throw new Api3NotSuccessResponseException(sprintf('支付宝返回的响应结果异常,sign错误[%s]', $json));
         }
 
     }
