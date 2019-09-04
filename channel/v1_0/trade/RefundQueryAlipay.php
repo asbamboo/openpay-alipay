@@ -1,10 +1,10 @@
 <?php
 namespace asbamboo\openpayAlipay\channel\v1_0\trade;
 
-use asbamboo\openpay\channel\v1_0\trade\RefundInterface;
+use asbamboo\openpay\channel\v1_0\trade\RefundQueryInterface;
 use asbamboo\openpayAlipay\Constant;
-use asbamboo\openpay\channel\v1_0\trade\RefundParameter\Request;
-use asbamboo\openpay\channel\v1_0\trade\RefundParameter\Response;
+use asbamboo\openpay\channel\v1_0\trade\RefundQueryParameter\Request;
+use asbamboo\openpay\channel\v1_0\trade\RefundQueryParameter\Response;
 use asbamboo\helper\env\Env AS EnvHelper;
 use asbamboo\openpayAlipay\Env;
 use asbamboo\openpayAlipay\alipayApi\Client;
@@ -13,9 +13,6 @@ use asbamboo\openpay\apiStore\exception\Api3NotSuccessResponseException;
 use asbamboo\api\apiStore\ApiResponseParams;
 use asbamboo\openpayAlipay\exception\ResponseFormatException;
 use asbamboo\api\exception\ApiException;
-use asbamboo\http\ServerRequestInterface;
-use asbamboo\openpay\channel\v1_0\trade\refundParameter\NotifyResult;
-use asbamboo\openpay\exception\OpenpayException;
 use asbamboo\openpay\Constant AS OpenpayConstant;
 
 /**
@@ -24,7 +21,7 @@ use asbamboo\openpay\Constant AS OpenpayConstant;
  * @author 李春寅<licy2013@aliyun.com>
  * @since 2018年11月5日
  */
-class RefundAlipay implements RefundInterface
+class RefundQueryAlipay implements RefundQueryInterface
 {
     /**
      *
@@ -56,28 +53,17 @@ class RefundAlipay implements RefundInterface
             }
             $Response           = new Response();
             $Response->setInRefundNo($Request->getInRefundNo());
-            $Response->setIsSuccess(true);
             if($AlipayResponse->get('fund_change') == true){
-                $Response->setRefundStatus(Response::REFUND_STATUS_SUCCESS);
-                $Response->setPayYmdhis($AlipayResponse->get('gmt_refund_pay'));
-                $Response->setRefundFee(bcmul($AlipayResponse->get('refund_fee'), 100));
+                $Response->setRefundStatus(OpenpayConstant::TRADE_REFUND_STATUS_SUCCESS);
+                $Response->setRefundPayYmdhis($AlipayResponse->get('gmt_refund_pay'));
             }else{
-                $Response->setRefundStatus(Response::REFUND_STATUS_FAILED);
+                $Response->setRefundStatus(OpenpayConstant::TRADE_REFUND_STATUS_FAILED);
             }
+            
             return $Response;
         }catch(ResponseFormatException $e){
             throw new ApiException($e->getMessage());
         }
-    }
-    
-    /**
-     * 
-     * {@inheritDoc}
-     * @see \asbamboo\openpay\channel\v1_0\trade\RefundInterface::notify()
-     */
-    public function notify(ServerRequestInterface $Request) : NotifyResult
-    {
-        throw new OpenpayException('支付宝退款没有notify');
     }
     
     /**
