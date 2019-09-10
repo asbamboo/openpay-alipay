@@ -102,7 +102,6 @@ abstract class ResponseAbstract implements ResponseInterface
     {
         $json           = $Response->getBody()->getContents();
         $decoded_json   = json_decode($json, true);
-
         $this->checkResponse($json, $decoded_json);
 
         $data           = [];

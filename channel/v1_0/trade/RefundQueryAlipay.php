@@ -34,7 +34,6 @@ class RefundQueryAlipay implements RefundQueryInterface
             $request_data           = [
                 'app_id'            => (string) EnvHelper::get(Env::ALIPAY_APP_ID),
                 'out_trade_no'      => $Request->getInTradeNo(),
-                'refund_amount'     => bcdiv($Request->getRefundFee(), 100, 2), //聚合接口接收的单位是分，支付宝的单位是元,
                 'out_request_no'    => $Request->getInRefundNo(),
             ];
 
@@ -45,7 +44,7 @@ class RefundQueryAlipay implements RefundQueryInterface
                 }
             }
             
-            $AlipayResponse = Client::request('TradeRefund', $request_data);
+            $AlipayResponse = Client::request('TradeFastpayRefundQuery', $request_data);
             if(     $AlipayResponse->get('code') != TradeRefundResponse::CODE_SUCCESS
                 ||  $AlipayResponse->get('sub_code') != null
                 ){
@@ -60,9 +59,13 @@ class RefundQueryAlipay implements RefundQueryInterface
             }
             $Response           = new Response();
             $Response->setInRefundNo($Request->getInRefundNo());
-            if($AlipayResponse->get('fund_change') == true){
+            if($AlipayResponse->get('refund_amount') > 0){
+                $gmt_refund_pay = $AlipayResponse->get('gmt_refund_pay');
+                if(empty($gmt_refund_pay)){
+                    $gmt_refund_pay = date('Y-m-d H:i:s');
+                }
                 $Response->setRefundStatus(OpenpayConstant::TRADE_REFUND_STATUS_SUCCESS);
-                $Response->setRefundPayYmdhis($AlipayResponse->get('gmt_refund_pay'));
+                $Response->setRefundPayYmdhis($gmt_refund_pay);
             }else{
                 $Response->setRefundStatus(OpenpayConstant::TRADE_REFUND_STATUS_FAILED);
             }

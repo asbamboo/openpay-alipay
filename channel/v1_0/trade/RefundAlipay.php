@@ -64,10 +64,10 @@ class RefundAlipay implements RefundInterface
             $Response           = new Response();
             $Response->setInRefundNo($Request->getInRefundNo());
             $Response->setIsSuccess(true);
-            if($AlipayResponse->get('fund_change') == true){
+            if($AlipayResponse->get('fund_change') == 'Y'){
                 $Response->setRefundStatus(Response::REFUND_STATUS_SUCCESS);
                 $Response->setPayYmdhis($AlipayResponse->get('gmt_refund_pay'));
-                $Response->setRefundFee(bcmul($AlipayResponse->get('refund_fee'), 100));
+                $Response->setRefundFee(bcmul($AlipayResponse->get('refund_fee'), 100, 0));
             }else{
                 $Response->setRefundStatus(Response::REFUND_STATUS_FAILED);
             }
