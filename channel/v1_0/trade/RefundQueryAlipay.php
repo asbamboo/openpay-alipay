@@ -38,6 +38,13 @@ class RefundQueryAlipay implements RefundQueryInterface
                 'out_request_no'    => $Request->getInRefundNo(),
             ];
 
+            $alipay_params          = json_decode((string) $Request->getThirdPart(), true);
+            if(is_array($alipay_params)){
+                foreach($alipay_params AS $alipay_key => $alipay_value){
+                    $request_data[$alipay_key] = $alipay_value;
+                }
+            }
+            
             $AlipayResponse = Client::request('TradeRefund', $request_data);
             if(     $AlipayResponse->get('code') != TradeRefundResponse::CODE_SUCCESS
                 ||  $AlipayResponse->get('sub_code') != null

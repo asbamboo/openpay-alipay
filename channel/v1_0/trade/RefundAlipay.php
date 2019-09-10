@@ -40,7 +40,14 @@ class RefundAlipay implements RefundInterface
                 'refund_amount'     => bcdiv($Request->getRefundFee(), 100, 2), //聚合接口接收的单位是分，支付宝的单位是元,
                 'out_request_no'    => $Request->getInRefundNo(),
             ];
-
+            
+            $alipay_params          = json_decode((string) $Request->getThirdPart(), true);
+            if(is_array($alipay_params)){
+                foreach($alipay_params AS $alipay_key => $alipay_value){
+                    $request_data[$alipay_key] = $alipay_value;
+                }
+            }
+            
             $AlipayResponse = Client::request('TradeRefund', $request_data);
             if(     $AlipayResponse->get('code') != TradeRefundResponse::CODE_SUCCESS
                 ||  $AlipayResponse->get('sub_code') != null
