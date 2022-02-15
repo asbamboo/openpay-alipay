@@ -13,6 +13,10 @@ use asbamboo\openpay\apiStore\exception\Api3NotSuccessResponseException;
 use asbamboo\api\apiStore\ApiResponseParams;
 use asbamboo\openpayAlipay\exception\ResponseFormatException;
 use asbamboo\api\exception\ApiException;
+use asbamboo\http\ServerRequestInterface;
+use asbamboo\openpay\channel\v1_0\trade\refundParameter\NotifyResult;
+use asbamboo\openpay\exception\OpenpayException;
+use asbamboo\openpay\Constant AS OpenpayConstant;
 
 /**
  * 发起支付宝退款请求
@@ -36,7 +40,14 @@ class RefundAlipay implements RefundInterface
                 'refund_amount'     => bcdiv($Request->getRefundFee(), 100, 2), //聚合接口接收的单位是分，支付宝的单位是元,
                 'out_request_no'    => $Request->getInRefundNo(),
             ];
-
+            
+            $alipay_params          = json_decode((string) $Request->getThirdPart(), true);
+            if(is_array($alipay_params)){
+                foreach($alipay_params AS $alipay_key => $alipay_value){
+                    $request_data[$alipay_key] = $alipay_value;
+                }
+            }
+            
             $AlipayResponse = Client::request('TradeRefund', $request_data);
             if(     $AlipayResponse->get('code') != TradeRefundResponse::CODE_SUCCESS
                 ||  $AlipayResponse->get('sub_code') != null
@@ -53,14 +64,29 @@ class RefundAlipay implements RefundInterface
             $Response           = new Response();
             $Response->setInRefundNo($Request->getInRefundNo());
             $Response->setIsSuccess(true);
-            $Response->setPayYmdhis($AlipayResponse->get('gmt_refund_pay'));
-            $Response->setRefundFee(bcmul($AlipayResponse->get('refund_fee'), 100));
+            if($AlipayResponse->get('fund_change') == 'Y'){
+                $Response->setRefundStatus(Response::REFUND_STATUS_SUCCESS);
+                $Response->setPayYmdhis($AlipayResponse->get('gmt_refund_pay'));
+                $Response->setRefundFee(bcmul($AlipayResponse->get('refund_fee'), 100, 0));
+            }else{
+                $Response->setRefundStatus(Response::REFUND_STATUS_FAILED);
+            }
             return $Response;
         }catch(ResponseFormatException $e){
             throw new ApiException($e->getMessage());
         }
     }
-
+    
+    /**
+     * 
+     * {@inheritDoc}
+     * @see \asbamboo\openpay\channel\v1_0\trade\RefundInterface::notify()
+     */
+    public function notify(ServerRequestInterface $Request) : NotifyResult
+    {
+        throw new OpenpayException('支付宝退款没有notify');
+    }
+    
     /**
      *
      * {@inheritDoc}
@@ -72,6 +98,7 @@ class RefundAlipay implements RefundInterface
             Constant::CHANNEL_ALIPAY_PC     => Constant::CHANNEL_ALIPAY_PC_LABEL,
             Constant::CHANNEL_ALIPAY_APP    => Constant::CHANNEL_ALIPAY_APP_LABEL,
             Constant::CHANNEL_ALIPAY_QRCD   => Constant::CHANNEL_ALIPAY_QRCD_LABEL,
+            Constant::CHANNEL_ALIPAY_ONECD  => Constant::CHANNEL_ALIPAY_ONECD_LABEL,
         ];
     }
 }

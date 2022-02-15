@@ -12,6 +12,8 @@ final class Constant
     /************************************************************************************************
      * 支付渠道常量
      ***********************************************************************************************/
+    const CHANNEL_ALIPAY_ONECD          = 'ALIPAY_ONECD';
+    const CHANNEL_ALIPAY_ONECD_LABEL    = '支付宝一码付';
     const CHANNEL_ALIPAY_QRCD           = 'ALIPAY_QRCD';
     const CHANNEL_ALIPAY_QRCD_LABEL     = '支付宝扫码支付';
     const CHANNEL_ALIPAY_PC             = 'ALIPAY_PC';
